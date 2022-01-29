@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <title>Movie Rating</title>
+</head>
+<body>
+   
+     <div class = "container">
+        <h1 class = "text-center mt-5">Movie Rating</h1><br>
+
+        <form id = "movieform" autocomplete ="off" >
+            <div class="form-group">
+
+                <label for="movie">Movie Name</label>
+                <input  class = "form-control" type="text" id ="movie">
+
+            </div>
+            <div class="form-group">
+                <button class = "btn btn-danger btn-block">
+                    Search
+                </button>
+            </div>
+        </form>
+        <div id = "result">
+
+        </div>
+
+     </div>
+   
+   
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        // targetting function 
+        $(document).ready(function(){
+
+           // to get access to the api
+            var apikey = "b0eab57c"
+
+            //targetting form by id
+            $("#movieform").submit(function(event){
+                //prevents auto submission
+                event.preventDefault()
+
+                //to store movie input
+                var movie = $("#movie").val()
+
+                var result = ""
+
+                //connecting query
+                var url = "http://www.omdbapi.com/?apikey="+apikey
+
+                $.ajax({
+                    method:'GET',
+                    url:url+"&t="+movie,
+                    
+                    //will retrn the data when the request is succesful
+                    success:function(data){
+
+                        console.log(data); 
+
+                        //showing result
+                        result = `
+                        
+                        <img style = "float:left" class="img-thumnail" width ="400" height ="400" src = "${data.Poster}"/>
+                        <h2 >Title:</h2>
+                        <h4>${data.Title}</h4>
+                        <h2>Released Date:</h2>
+                        <h4>${data.Released}</h4>
+                        <h2>Runtime:</h2>
+                        <h4>${data.Runtime}</h4>
+                        <h2>No of votes:</h2>
+                        <h4>${data.imdbVotes}</h4>
+                        <h2>Rating:</h2>
+                        <h4>${data.imdbRating}</h4>
+                        
+                        
+                        
+                        `;
+                        $("#result").html(result)
+
+                    } 
+                })
+            })
+        })
+    </script>
+
+    
+</body>
+</html>
